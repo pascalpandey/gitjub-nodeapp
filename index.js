@@ -12,7 +12,7 @@ app.get("/:user/:repo/:branch", async (req, res) => {
     const reponame = req.params.repo;
     const branch = req.params.branch;
 
-    const repoPath = `../repositories/${username}/${reponame}`;
+    const repoPath = `/home/git/repositories/${username}/${reponame}`;
 
     const repo = await nodegit.Repository.open(repoPath);
     const commit = await repo.getBranchCommit(`refs/heads/${branch}`);
@@ -42,7 +42,7 @@ app.get("/:user/:repo/:branch/:entrypath(*)", async (req, res) => {
     const entryPath = req.params?.entrypath;
     const branch = req.params.branch;
 
-    const repoPath = `../repositories/${username}/${reponame}`;
+    const repoPath = `/home/git/repositories/${username}/${reponame}`;
 
     const repo = await nodegit.Repository.open(repoPath);
     const commit = await repo.getBranchCommit(`refs/heads/${branch}`);
