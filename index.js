@@ -6,15 +6,16 @@ app.get("/test", (req, res) => {
   res.send("<h1>It's working 🤗</h1>");
 });
 
-app.get("/:user/:repo", async (req, res) => {
+app.get("/:user/:repo/:branch", async (req, res) => {
   try {
     const username = req.params.user;
     const reponame = req.params.repo;
+    const branch = req.params.branch;
 
     const repoPath = `../repositories/${username}/${reponame}`;
 
     const repo = await nodegit.Repository.open(repoPath);
-    const commit = await repo.getBranchCommit("refs/heads/main");
+    const commit = await repo.getBranchCommit(`refs/heads/${branch}`);
     const tree = await commit.getTree();
 
     const entries = tree.entries();
@@ -34,16 +35,17 @@ app.get("/:user/:repo", async (req, res) => {
   }
 });
 
-app.get("/:user/:repo/:entrypath(*)", async (req, res) => {
+app.get("/:user/:repo/:branch/:entrypath(*)", async (req, res) => {
   try {
     const username = req.params.user;
     const reponame = req.params.repo;
     const entryPath = req.params?.entrypath;
+    const branch = req.params.branch;
 
     const repoPath = `../repositories/${username}/${reponame}`;
 
     const repo = await nodegit.Repository.open(repoPath);
-    const commit = await repo.getBranchCommit("refs/heads/main");
+    const commit = await repo.getBranchCommit(`refs/heads/${branch}`);
     const entry = await commit.getEntry(entryPath);
 
     if (entry.isTree()) {
