@@ -80,7 +80,7 @@ app.get("/:user/:repo/:branch/:entrypath(*)", async (req, res) => {
 app.post("/:user/:sshKey", async (req, res) => {
   try {
     const username = req.params.user;
-    const sshKey = req.params.sshKey;
+    const sshKey = decodeURIComponent(req.params.sshKey);
     const writeStream = fs.createWriteStream(`/home/git/.gitolite/keydir/${username}.pub`);
 
     console.log("Username:", username);
