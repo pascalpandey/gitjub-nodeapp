@@ -1,5 +1,6 @@
 const express = require("express");
 const nodegit = require("nodegit");
+const fs = require("fs");
 const app = express();
 
 app.get("/test", (req, res) => {
@@ -66,7 +67,7 @@ app.get("/:user/:repo/:branch/:entrypath(*)", async (req, res) => {
       var out = fileBlob.toString();
 
       res.write(out);
-      res.end()
+      res.end();
     } else {
       var out = "not supported";
     }
@@ -75,6 +76,23 @@ app.get("/:user/:repo/:branch/:entrypath(*)", async (req, res) => {
     res.send("invalid path");
   }
 });
+
+app.post("/:user/sshKey", async (req, res) => {
+  try {
+    const username = req.params.user;
+    const sshKey = req.body;
+    const writeStream = fs.createWriteStream(`/home/git/.gitolite/keydir/${username}.pub`);
+    writeStream.write(sshKey);
+    writeStream.end();
+
+    res.send("success");
+  } catch (error) {
+    console.log(error);
+    res.send("error");
+  }
+});
+
+app.post("/:user/repo", async (req, res) => {});
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}`));
