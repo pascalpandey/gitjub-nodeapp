@@ -82,6 +82,10 @@ app.post("/:user/sshKey", async (req, res) => {
     const username = req.params.user;
     const sshKey = req.body;
     const writeStream = fs.createWriteStream(`/home/git/.gitolite/keydir/${username}.pub`);
+
+    console.log("Username:", username);
+    console.log("SSH Key:", sshKey);
+    
     writeStream.write(sshKey.toString());
     writeStream.end();
 
