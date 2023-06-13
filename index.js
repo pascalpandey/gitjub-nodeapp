@@ -77,7 +77,7 @@ app.get("/:user/:repo/:branch/:entrypath(*)", async (req, res) => {
   }
 });
 
-app.post("/:user/:sshKey", async (req, res) => {
+app.post("/:user/sshKey/:sshKey", async (req, res) => {
   try {
     const username = req.params.user;
     const sshKey = decodeURIComponent(req.params.sshKey);
